@@ -1,9 +1,26 @@
 import * as React from "react";
+import Papa from "papaparse";
 
 function Matrix(props) {
   const { level, selected } = props;
   const [matrix, setMatrix] = React.useState([]);
   const levels = { 0: [2, 3], 1: [5, 6], 2: [6, 6], 3: [6, 8] };
+  const [birdList, setBirdList] = React.useState([]);
+
+  React.useEffect(() => {
+    async function getData() {
+      const response = await fetch("/data/BirdList1.csv");
+      const reader = response.body.getReader();
+      const result = await reader.read(); // raw array
+      const decoder = new TextDecoder("utf-8");
+      const csv = decoder.decode(result.value); // the csv text
+      const results = Papa.parse(csv, { header: false, delimiter: "," }); // object with { data, errors, meta }
+      const list = results.data; // array of objects
+      setBirdList(list);
+      console.log(results.data);
+    }
+    getData();
+  }, []); // [] means just do this once, after initial render
 
   const list = [
     { english: "bird1", spanish: "pajaro1", scientific: "ave ave" },
@@ -42,14 +59,17 @@ function Matrix(props) {
   }
 
   const [deck, setDeck] = React.useState([]);
-  React.useEffect(() => setDeck(JSON.stringify(shuffleArray(list))), [
-    selected
-  ]);
+  React.useEffect(() => setDeck(shuffleArray(birdList)), [selected]);
   const [pairedDeck, setPairedDeck] = React.useState([]);
 
   React.useEffect(() => {
-    const currentlyPlaying = deck.slice(0, matrix.flat.length / 2);
-    setPairedDeck(shuffleArray(currentlyPlaying));
+    const currentlyPlaying = deck.slice(0, matrix.flat().length / 2);
+    setPairedDeck(
+      shuffleArray([...currentlyPlaying, ...currentlyPlaying]).map(
+        card => card[0]
+      )
+    );
+    console.log("currentlyPlaying: ", matrix.flat());
   }, [deck]);
 
   return (
@@ -68,7 +88,7 @@ function Matrix(props) {
           </div>
         );
       })}
-      <div>{cardsFlipped.map(card => `${card}, `)}</div>
+      {/* <div>{cardsFlipped.map(card => `${card}, `)}</div> */}
       <div>{pairedDeck}</div>
     </div>
   );
