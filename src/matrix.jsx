@@ -3,9 +3,13 @@ import * as React from "react";
 function Matrix(props) {
   const { level, selected } = props;
   const [matrix, setMatrix] = React.useState([]);
-  const levels = { 1: [5, 6], 2: [6, 6], 3: [6, 8] };
-  // const fixedMatrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]];
+  const levels = { 0: [2, 3], 1: [5, 6], 2: [6, 6], 3: [6, 8] };
 
+  const list = [
+    { english: "bird1", spanish: "pajaro1", scientific: "ave ave" },
+    { english: "bird2", spanish: "pajaro2", scientific: "ave birdaes" },
+    { english: "bird3", spanish: "pajaro3", scientific: "avesauros rex" }
+  ];
   React.useEffect(() => {
     let grid = [];
 
@@ -29,6 +33,25 @@ function Matrix(props) {
     console.log(`I told you that I am ${row}-${column}`);
   };
 
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  const [deck, setDeck] = React.useState([]);
+  React.useEffect(() => setDeck(JSON.stringify(shuffleArray(list))), [
+    selected
+  ]);
+  const [pairedDeck, setPairedDeck] = React.useState([]);
+
+  React.useEffect(() => {
+    const currentlyPlaying = deck.slice(0, matrix.flat.length / 2);
+    setPairedDeck(shuffleArray(currentlyPlaying));
+  }, [deck]);
+
   return (
     <div>
       {matrix.map((row, rowIndex) => {
@@ -46,6 +69,7 @@ function Matrix(props) {
         );
       })}
       <div>{cardsFlipped.map(card => `${card}, `)}</div>
+      <div>{pairedDeck}</div>
     </div>
   );
 }

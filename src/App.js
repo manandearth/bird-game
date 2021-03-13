@@ -10,12 +10,18 @@ function App() {
     <div className="App">
       <h1>bird-game</h1>
       <h2>choose you level</h2>
-      <select onChange={e => setLevel(parseInt(e.target.value))}>
-        {[1, 2, 3].map(option => (
-          <option key={`option - ${option}`}>{option}</option>
-        ))}
+      <select
+        onChange={e => setLevel(parseInt(e.target.value))}
+        disabled={selected}
+        defaultValue={"1"}
+      >
+        {[0, 1, 2, 3].map(option => {
+          return <option key={`option - ${option}`}>{option}</option>;
+        })}
       </select>
-      <button onClick={() => setSelected(true)}>Start</button>
+      <button onClick={() => setSelected(true)} disabled={selected}>
+        Start
+      </button>
       <h2>{`level - ${level}`}</h2>
       <Matrix level={level} selected={selected} />
     </div>
