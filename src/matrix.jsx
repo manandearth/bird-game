@@ -1,23 +1,26 @@
 import * as React from "react";
 
 function Matrix(props) {
-  const { level } = props;
+  const { level, selected } = props;
   const [matrix, setMatrix] = React.useState([]);
+  const levels = { 1: [5, 6], 2: [6, 6], 3: [6, 8] };
+  // const fixedMatrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]];
 
   React.useEffect(() => {
     let grid = [];
-    for (var i = 0; i < level; i++) {
+
+    let currentKey = Object.keys(levels).find(key => parseInt(key) === level);
+    let currentValues = levels[currentKey];
+    for (var i = 0; i < currentValues[0]; i++) {
       grid[i] = [];
-      for (var j = 0; j < level; j++) {
+      for (var j = 0; j < currentValues[1]; j++) {
         grid[i][j] = undefined;
       }
       console.log(typeof level);
     }
 
-    setMatrix(grid);
-  }, [level]);
-
-  const fixedMatrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10, 11, 12]];
+    if (selected) setMatrix(grid);
+  }, [level, selected]);
 
   const [cardsFlipped, setCardsFlipped] = React.useState([]);
 
