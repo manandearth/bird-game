@@ -12,12 +12,13 @@ function Matrix() {
 
   return (
     <div>
-      {fixedMatrix.map(row => {
+      {fixedMatrix.map((row, index) => {
         return (
-          <div>
-            {row.map(card => {
+          <div key={`row-${index}`}>
+            {row.map((card, index) => {
               return (
                 <button
+                  key={`button-${index}`}
                   onClick={() => handleClick(card)}
                 >{`Hi I am ${card}`}</button>
               );
