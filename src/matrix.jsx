@@ -1,5 +1,6 @@
 import * as React from "react";
 import Papa from "papaparse";
+import Card from "./card.jsx";
 
 function Matrix(props) {
   const { level, selected } = props;
@@ -72,17 +73,40 @@ function Matrix(props) {
     console.log("currentlyPlaying: ", matrix.flat());
   }, [deck]);
 
+  const [positionsArray, setPositionsArray] = React.useState([]);
+  React.useEffect(() => {
+    const flatPositions = matrix
+      .map((row, rowIndex) =>
+        row.map((column, columnIndex) => ({ rowIndex, columnIndex }))
+      )
+      .flat();
+
+    setPositionsArray(
+      flatPositions.map((pos, i) => ({ pos, card: pairedDeck[i] }))
+    );
+  }, [matrix, pairedDeck]);
+
+  React.useEffect(() => console.log("positionArray", positionsArray));
+
   return (
     <div>
       {matrix.map((row, rowIndex) => {
         return (
-          <div key={`row-${rowIndex}`}>
+          <div className="container" key={`row-${rowIndex}`}>
             {row.map((column, columnIndex) => {
               return (
-                <button
+                <Card
                   key={`button-${rowIndex}-${columnIndex}`}
-                  onClick={() => handleClick(rowIndex, columnIndex)}
-                >{`Hi I am ${rowIndex}-${columnIndex}`}</button>
+                  handleClick={handleClick}
+                  rowIndex={rowIndex}
+                  columnIndex={columnIndex}
+                  cardValue={
+                    pairedDeck?.length > 0 &&
+                    positionsArray
+                      .filter(item => item.pos.columnIndex === columnIndex)
+                      .find(item => item.pos.rowIndex === rowIndex).card
+                  }
+                />
               );
             })}
           </div>
