@@ -46,9 +46,21 @@ function Matrix(props) {
 
   const [cardsFlipped, setCardsFlipped] = React.useState([]);
 
-  const handleClick = (row, column) => {
+  const [canFlip, setCanFlip] = React.useState(true);
+
+  const [resetCardsFlip, setResetCardsFlip] = React.useState(false);
+  const onResetCardsFlip = React.useCallback(value => setResetCardsFlip(value));
+  const onClick = (row, column) => {
     setCardsFlipped([...cardsFlipped, [row, column]]);
     console.log(`I told you that I am ${row}-${column}`);
+    if (cardsFlipped.length === 1) {
+      setCanFlip(false);
+      setTimeout(() => {
+        setResetCardsFlip(true);
+        setCanFlip(true);
+        setCardsFlipped([]);
+      }, 2000);
+    }
   };
 
   function shuffleArray(arr) {
@@ -66,10 +78,11 @@ function Matrix(props) {
   React.useEffect(() => {
     const currentlyPlaying = deck.slice(0, matrix.flat().length / 2);
     setPairedDeck(
-      shuffleArray([...currentlyPlaying, ...currentlyPlaying]).map(
-        card => card[0]
-      )
+      shuffleArray([...currentlyPlaying, ...currentlyPlaying]).map(card => [
+        ...card
+      ])
     );
+
     console.log("currentlyPlaying: ", matrix.flat());
   }, [deck]);
 
@@ -94,18 +107,23 @@ function Matrix(props) {
         return (
           <div className="container" key={`row-${rowIndex}`}>
             {row.map((column, columnIndex) => {
+              const cardValue =
+                pairedDeck?.length > 0 &&
+                positionsArray
+                  .filter(item => item.pos.columnIndex === columnIndex)
+                  .find(item => item.pos.rowIndex === rowIndex).card;
               return (
                 <Card
                   key={`button-${rowIndex}-${columnIndex}`}
-                  handleClick={handleClick}
+                  onClick={onClick}
                   rowIndex={rowIndex}
                   columnIndex={columnIndex}
-                  cardValue={
-                    pairedDeck?.length > 0 &&
-                    positionsArray
-                      .filter(item => item.pos.columnIndex === columnIndex)
-                      .find(item => item.pos.rowIndex === rowIndex).card
-                  }
+                  cardEnglishName={cardValue?.[0]}
+                  cardLatinName={cardValue?.[1]}
+                  cardSpanishName={cardValue?.[2]}
+                  canFlip={canFlip}
+                  resetCardsFlip={resetCardsFlip}
+                  onResetCardsFlip={onResetCardsFlip}
                 />
               );
             })}
@@ -113,7 +131,7 @@ function Matrix(props) {
         );
       })}
       {/* <div>{cardsFlipped.map(card => `${card}, `)}</div> */}
-      <div>{pairedDeck}</div>
+      {/* <div>{pairedDeck}</div> */}
     </div>
   );
 }

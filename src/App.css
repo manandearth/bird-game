@@ -12,8 +12,14 @@
 .item {
 
 width: 100px;  /* Or whatever */
-  height: 100px; /* Or whatever */
-  margin: auto;  /* Magic! */
+  height: 200px; /* Or whatever */
+  margin: 1rem;  /* Magic! */
+  border-style: solid;
+  border-color: grey;
+  cursor: pointer;		
+  
 }
     
-
+.title {
+    margin: 1rem;
+}
