@@ -19,6 +19,9 @@ width: 100px;  /* Or whatever */
   cursor: pointer;		
   
 }
+.backside {
+    border-color: red;
+}
     
 .title {
     margin: 1rem;

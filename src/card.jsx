@@ -10,16 +10,28 @@ const Card = props => {
     cardSpanishName,
     canFlip,
     resetCardsFlip,
-    onResetCardsFlip
+    onResetCardsFlip,
+    foundPairs
   } = props;
 
   const [flip, setFlip] = React.useState(true);
 
+  const [wasFound, setWasFound] = React.useState(false);
+
+  React.useEffect(() => {
+    if (foundPairs.filter(card => card === cardEnglishName).length > 0) {
+      setWasFound(true);
+    }
+  }, [foundPairs]);
   const handleOnClick = () => {
     if (canFlip) {
-      setFlip(!flip);
-      onClick(rowIndex, columnIndex);
-      console.log(flip);
+      if (!wasFound) {
+        setFlip(!flip);
+        onClick(rowIndex, columnIndex);
+        console.log(flip);
+      } else {
+        console.log("was already found!");
+      }
     } else {
       console.log("cannot flip more than 2 cards, buddy!");
     }
@@ -44,7 +56,10 @@ const Card = props => {
           <div className="title">{cardSpanishName}</div>
         </div>
       ) : (
-        <div className="item" onClick={() => handleOnClick()}>
+        <div
+          className={`item ${wasFound ? "backside" : ""}`}
+          onClick={() => handleOnClick()}
+        >
           <div key={`back-button-${rowIndex}-${columnIndex}`} />
         </div>
       )}

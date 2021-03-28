@@ -54,14 +54,48 @@ function Matrix(props) {
     setCardsFlipped([...cardsFlipped, [row, column]]);
     console.log(`I told you that I am ${row}-${column}`);
     if (cardsFlipped.length === 1) {
+      // console.log("cards flipped in this turn are: ", [
+      // ...cardsFlipped,
+      // [row, column]
+      // ]);
       setCanFlip(false);
       setTimeout(() => {
         setResetCardsFlip(true);
         setCanFlip(true);
-        setCardsFlipped([]);
+        // setCardsFlipped([]);
       }, 2000);
     }
   };
+  const [foundPairs, setFoundPairs] = React.useState([]);
+
+  React.useEffect(() => {
+    console.log("found a pair");
+    console.log(`the new pair is: ${foundPairs[foundPairs.length - 1]}`);
+  }, [foundPairs]);
+
+  const areCardsSame = pair => {
+    const [a, b] = pair;
+    const firstCard = positionsArray
+      .filter(card => card.pos.columnIndex === a[1])
+      .find(card => card.pos.rowIndex === a[0]);
+    const secondCard = positionsArray
+      .filter(card => card.pos.columnIndex === b[1])
+      .find(card => card.pos.rowIndex === b[0]);
+    console.log(positionsArray);
+    console.log("firstCard", firstCard);
+    console.log("secondCard", secondCard);
+    if (firstCard.card[0] === secondCard.card[0]) {
+      setFoundPairs([...foundPairs, firstCard.card[0]]);
+    }
+  };
+
+  React.useEffect(() => {
+    if (cardsFlipped.length === 2) {
+      console.log("cards flipped in this turn are: ", cardsFlipped);
+      areCardsSame(cardsFlipped);
+      setCardsFlipped([]);
+    }
+  }, [cardsFlipped]);
 
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
@@ -99,7 +133,7 @@ function Matrix(props) {
     );
   }, [matrix, pairedDeck]);
 
-  React.useEffect(() => console.log("positionArray", positionsArray));
+  // React.useEffect(() => console.log("positionArray", positionsArray));
 
   return (
     <div>
@@ -124,13 +158,14 @@ function Matrix(props) {
                   canFlip={canFlip}
                   resetCardsFlip={resetCardsFlip}
                   onResetCardsFlip={onResetCardsFlip}
+                  foundPairs={foundPairs}
                 />
               );
             })}
           </div>
         );
       })}
-      {/* <div>{cardsFlipped.map(card => `${card}, `)}</div> */}
+      <div>{cardsFlipped.map(card => `${card}, `)}</div>
       {/* <div>{pairedDeck}</div> */}
     </div>
   );
