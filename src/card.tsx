@@ -1,16 +1,16 @@
 import * as React from "react";
 
 type Props = {
-   rowIndex: any,
-    columnIndex: any,
-    onClick: any,
-    cardEnglishName: any,
-    cardLatinName: any,
-    cardSpanishName: any,
-    canFlip: any,
-    resetCardsFlip: any,
-    onResetCardsFlip: any,
-    foundPairs: any
+   rowIndex: object,
+    columnIndex: object,
+    onClick: Function,
+    cardEnglishName: string,
+    cardLatinName: string,
+    cardSpanishName: string,
+    canFlip: Boolean,
+    resetCardsFlip: Function,
+    onResetCardsFlip: Function,
+    foundPairs: Array<string>
 }
 const Card = ({
     rowIndex,
@@ -30,9 +30,10 @@ const Card = ({
   const [wasFound, setWasFound] = React.useState(false);
 
   React.useEffect(() => {
-    if (foundPairs.filter((card: any) => card === cardEnglishName).length > 0) {
+    if (foundPairs.filter((card: string) => card === cardEnglishName).length > 0) {
       setWasFound(true);
     }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [foundPairs]);
   const handleOnClick = () => {
     if (canFlip) {
@@ -53,6 +54,7 @@ const Card = ({
       setFlip(true);
       onResetCardsFlip(false);
     }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resetCardsFlip]);
 
   return (

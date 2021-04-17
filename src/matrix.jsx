@@ -37,6 +37,7 @@ function Matrix(props) {
     }
 
     if (selected) setMatrix(grid);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [level, selected]);
 
   const [cardsFlipped, setCardsFlipped] = React.useState([]);
@@ -44,6 +45,7 @@ function Matrix(props) {
   const [canFlip, setCanFlip] = React.useState(true);
 
   const [resetCardsFlip, setResetCardsFlip] = React.useState(false);
+  //eslint-disable-next-line react-hooks/exhaustive-deps
   const onResetCardsFlip = React.useCallback(value => setResetCardsFlip(value));
   const onClick = (row, column) => {
     setCardsFlipped([...cardsFlipped, [row, column]]);
@@ -81,6 +83,9 @@ function Matrix(props) {
     console.log("secondCard", secondCard);
     if (firstCard.card[0] === secondCard.card[0]) {
       setFoundPairs([...foundPairs, firstCard.card[0]]);
+      console.log([...foundPairs, firstCard.card[0]]);
+
+      console.log(typeof [...foundPairs, firstCard.card[0]]);
     }
   };
 
@@ -90,6 +95,7 @@ function Matrix(props) {
       areCardsSame(cardsFlipped);
       setCardsFlipped([]);
     }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardsFlipped]);
 
   function shuffleArray(arr) {
@@ -101,6 +107,7 @@ function Matrix(props) {
   }
 
   const [deck, setDeck] = React.useState([]);
+  //eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(() => setDeck(shuffleArray(birdList)), [selected]);
   const [pairedDeck, setPairedDeck] = React.useState([]);
 
@@ -113,6 +120,7 @@ function Matrix(props) {
     );
 
     console.log("currentlyPlaying: ", matrix.flat());
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deck]);
 
   const [positionsArray, setPositionsArray] = React.useState([]);
