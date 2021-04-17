@@ -1,7 +1,18 @@
 import * as React from "react";
 
-const Card = props => {
-  const {
+type Props = {
+   rowIndex: any,
+    columnIndex: any,
+    onClick: any,
+    cardEnglishName: any,
+    cardLatinName: any,
+    cardSpanishName: any,
+    canFlip: any,
+    resetCardsFlip: any,
+    onResetCardsFlip: any,
+    foundPairs: any
+}
+const Card = ({
     rowIndex,
     columnIndex,
     onClick,
@@ -12,14 +23,14 @@ const Card = props => {
     resetCardsFlip,
     onResetCardsFlip,
     foundPairs
-  } = props;
+  } : Props) => {
 
   const [flip, setFlip] = React.useState(true);
 
   const [wasFound, setWasFound] = React.useState(false);
 
   React.useEffect(() => {
-    if (foundPairs.filter(card => card === cardEnglishName).length > 0) {
+    if (foundPairs.filter((card: any) => card === cardEnglishName).length > 0) {
       setWasFound(true);
     }
   }, [foundPairs]);

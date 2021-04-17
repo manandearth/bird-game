@@ -1,6 +1,6 @@
 import * as React from "react";
 import Papa from "papaparse";
-import Card from "./card.jsx";
+import Card from "./card.tsx";
 
 function Matrix(props) {
   const { level, selected } = props;
@@ -23,11 +23,6 @@ function Matrix(props) {
     getData();
   }, []); // [] means just do this once, after initial render
 
-  const list = [
-    { english: "bird1", spanish: "pajaro1", scientific: "ave ave" },
-    { english: "bird2", spanish: "pajaro2", scientific: "ave birdaes" },
-    { english: "bird3", spanish: "pajaro3", scientific: "avesauros rex" }
-  ];
   React.useEffect(() => {
     let grid = [];
 

@@ -1,6 +1,7 @@
 import "./App.css";
 import * as React from "react";
 import Matrix from "./matrix.jsx";
+import Button from "./button";
 
 function App() {
   const [level, setLevel] = React.useState(1);
@@ -24,6 +25,10 @@ function App() {
       </button>
       <h2>{`level - ${level}`}</h2>
       <Matrix level={level} selected={selected} />
+      <Button
+        text="typescript"
+        onClick={() => console.log("type is cool")}
+      />
     </div>
   );
 }
