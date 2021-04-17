@@ -1,6 +1,6 @@
 import "./App.css";
 import * as React from "react";
-import Matrix from "./matrix.jsx";
+import Matrix from "./matrix";
 import Button from "./button";
 
 function App() {

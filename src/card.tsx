@@ -1,14 +1,14 @@
 import * as React from "react";
 
 type Props = {
-   rowIndex: object,
-    columnIndex: object,
+   rowIndex: Number,
+    columnIndex: Number,
     onClick: Function,
     cardEnglishName: string,
     cardLatinName: string,
     cardSpanishName: string,
     canFlip: Boolean,
-    resetCardsFlip: Function,
+    resetCardsFlip: Boolean,
     onResetCardsFlip: Function,
     foundPairs: Array<string>
 }

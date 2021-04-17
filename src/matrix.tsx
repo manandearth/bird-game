@@ -1,22 +1,29 @@
 import * as React from "react";
 import Papa from "papaparse";
-import Card from "./card.tsx";
+import Card from "./card";
 
-function Matrix(props) {
-  const { level, selected } = props;
+type Props = {
+  level: Number,
+  selected: any,
+}
+function Matrix({level, selected} : Props) {
   const [matrix, setMatrix] = React.useState([]);
-  const levels = { 0: [2, 3], 1: [5, 6], 2: [6, 6], 3: [6, 8] };
+  const levels : Object = { 0: [2, 3], 1: [5, 6], 2: [6, 6], 3: [6, 8] };
   const [birdList, setBirdList] = React.useState([]);
 
+  interface IParse {
+    data: any
+  }
+  
   React.useEffect(() => {
     async function getData() {
-      const response = await fetch("/data/BirdList1.csv");
-      const reader = response.body.getReader();
-      const result = await reader.read(); // raw array
+      const response  = await fetch("/data/BirdList1.csv");
+      const reader = response?.body?.getReader();
+      const result = await reader?.read(); // raw array
       const decoder = new TextDecoder("utf-8");
-      const csv = decoder.decode(result.value); // the csv text
-      const results = Papa.parse(csv, { header: false, delimiter: "," }); // object with { data, errors, meta }
-      const list = results.data; // array of objects
+      const csv = decoder.decode(result?.value); // the csv text
+      const results : IParse = Papa.parse(csv, { header: false, delimiter: "," }); // object with { data, errors, meta }
+      const list  = results.data; // array of objects
       setBirdList(list);
       console.log(results.data);
     }
@@ -26,7 +33,7 @@ function Matrix(props) {
   React.useEffect(() => {
     let grid = [];
 
-    let currentKey = Object.keys(levels).find(key => parseInt(key) === level);
+    let currentKey = Object.keys(levels)?.find(key  => parseInt(key) === level) || 0 ;
     let currentValues = levels[currentKey];
     for (var i = 0; i < currentValues[0]; i++) {
       grid[i] = [];
@@ -46,7 +53,7 @@ function Matrix(props) {
 
   const [resetCardsFlip, setResetCardsFlip] = React.useState(false);
   //eslint-disable-next-line react-hooks/exhaustive-deps
-  const onResetCardsFlip = React.useCallback(value => setResetCardsFlip(value));
+  const onResetCardsFlip = React.useCallback(value => setResetCardsFlip(value),[]);
   const onClick = (row, column) => {
     setCardsFlipped([...cardsFlipped, [row, column]]);
     console.log(`I told you that I am ${row}-${column}`);
