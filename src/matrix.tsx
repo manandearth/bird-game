@@ -1,7 +1,9 @@
 import * as React from "react";
 import Papa from "papaparse";
-import Card from "./card";
-
+import PlayCard from "./card";
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 type Props = {
   level: Number,
   selected: any,
@@ -149,7 +151,8 @@ function Matrix({level, selected} : Props) {
     <div>
       {matrix.map((row, rowIndex) => {
         return (
-          <div className="container" key={`row-${rowIndex}`}>
+	      <Grid container alignItems="center" justify="center" spacing={3}>
+
             {row.map((column, columnIndex) => {
               const cardValue =
                 pairedDeck?.length > 0 &&
@@ -157,7 +160,8 @@ function Matrix({level, selected} : Props) {
                   .filter(item => item.pos.columnIndex === columnIndex)
                   .find(item => item.pos.rowIndex === rowIndex).card;
               return (
-                <Card
+		<Grid item >
+                <PlayCard
                   key={`button-${rowIndex}-${columnIndex}`}
                   onClick={onClick}
                   rowIndex={rowIndex}
@@ -170,9 +174,10 @@ function Matrix({level, selected} : Props) {
                   onResetCardsFlip={onResetCardsFlip}
                   foundPairs={foundPairs}
                 />
+		</Grid>
               );
             })}
-          </div>
+	      </Grid>
         );
       })}
       <div>{cardsFlipped.map(card => `${card}, `)}</div>
